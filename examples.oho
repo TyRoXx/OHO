@@ -1,2 +1,4 @@
 if true: print "Hello, world!" print "another"
 if false: print "Hallo"
+// we don't have else because we don't need it
+if true: print "test"
