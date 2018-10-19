@@ -33,10 +33,14 @@ struct interpreter {
       return std::string(begin_of_string, end_of_string);
     }
     ++begin;
+    if (begin != end && *begin == '=') {
+      ++begin;
+      return std::string(begin - 2, begin);
+    }
     return std::string(begin - 1, begin);
   }
 
-  std::string evaluate_expression(char const *&begin, char const *const end) {
+  std::string evaluate_atom(char const *&begin, char const *const end) {
     std::string const token = next_token(begin, end);
     if (token.empty()) {
       return token;
@@ -49,6 +53,33 @@ struct interpreter {
       return found->second;
     }
     return token;
+  }
+
+  std::string equals(std::string const &left, std::string const &right) {
+    if (left.size() == right.size()) {
+      return "true";
+    }
+    return "false";
+  }
+
+  std::string evaluate_expression(char const *&begin, char const *const end) {
+    std::string left = evaluate_atom(begin, end);
+    if (left == "!") {
+      std::string operand = evaluate_expression(begin, end);
+      if (operand == "true") {
+        return "false";
+      }
+      return "true";
+    }
+    char const *const before_operator = begin;
+    std::string potential_operator = next_token(begin, end);
+    if (potential_operator == "==") {
+      std::string right = evaluate_expression(begin, end);
+      return equals(left, right);
+    } else {
+      begin = before_operator;
+      return left;
+    }
   }
 
   void run(char const *begin, char const *const end) {

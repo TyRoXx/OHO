@@ -5,3 +5,11 @@ if true: print "test"
 
 ~variable = "123"
 print ~variable
+
+~condition = ~variable == "123"
+if ~condition: print "it works!"
+if !~condition: print "it doesn't work!"
+
+~condition = ~variable == "1234"
+if ~condition: print "it doesn't work!"
+if !~condition: print "it works!"
