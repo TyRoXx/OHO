@@ -8,7 +8,8 @@ struct interpreter {
   std::map<std::string, std::string> variables;
 
   std::string next_token(char const *&begin, char const *const end) {
-    while ((begin != end) && std::isspace(*begin)) {
+    while ((begin != end) &&
+           (std::isspace(*begin) || (*begin == '(') || (*begin == ')'))) {
       ++begin;
     }
     if (begin == end) {
