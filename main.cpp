@@ -63,6 +63,10 @@ struct interpreter {
     return "false";
   }
 
+  std::string add(std::string const &left, std::string const &right) {
+    return std::to_string(std::stoi(left) + std::stoi(right));
+  }
+
   std::string evaluate_expression(char const *&begin, char const *const end) {
     std::string left = evaluate_atom(begin, end);
     if (left == "!") {
@@ -77,6 +81,9 @@ struct interpreter {
     if (potential_operator == "==") {
       std::string right = evaluate_expression(begin, end);
       return equals(left, right);
+    } else if (potential_operator == "+") {
+      std::string right = evaluate_expression(begin, end);
+      return add(left, right);
     } else {
       begin = before_operator;
       return left;

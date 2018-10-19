@@ -13,3 +13,5 @@ if !~condition: print "it doesn't work!"
 ~condition = (~variable == "1234")
 if ~condition: print "it doesn't work!"
 if !~condition: print "it works!"
+
+print 1 + 2
