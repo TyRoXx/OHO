@@ -16,3 +16,6 @@ if !~condition: print "it works!"
 
 print 1 + 2
 print "a" & "b"
+
+~i = "0"
+WHILE ~i < 3: print ~i   ~i = ~i + 1

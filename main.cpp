@@ -87,18 +87,37 @@ struct interpreter {
     } else if (potential_operator == "&") {
       std::string right = evaluate_expression(begin, end);
       return (left + right);
+    } else if (potential_operator == "<") {
+      std::string right = evaluate_expression(begin, end);
+      return (left < right) ? "true" : "false";
     } else {
       begin = before_operator;
       return left;
     }
   }
 
-  void run(char const *begin, char const *const end) {
+  void run_while(char const *&begin, char const *const end) {
+    char const *const condition_at = begin;
     for (;;) {
-      std::string const token = next_token(begin, end);
+      std::string condition = evaluate_expression(begin, end);
+      std::string colon = next_token(begin, end);
+      if (condition != "true") {
+        begin = std::find(begin, end, '\n');
+        return;
+      }
+      run_line(begin, end);
+      begin = condition_at;
+    }
+  }
 
+  void run_line(char const *&begin, char const *end) {
+    end = std::find(begin, end, '\n');
+    for (;;) {
+      std::string token = next_token(begin, end);
+      std::transform(token.begin(), token.end(), token.begin(),
+                     [](char c) { return std::tolower(c); });
       if (token == "") {
-        break;
+        return;
       }
       if (token == "print") {
         std::string message = evaluate_expression(begin, end);
@@ -109,11 +128,23 @@ struct interpreter {
         if (condition != "true") {
           begin = std::find(begin, end, '\n');
         }
+      } else if (token == "while") {
+        run_while(begin, end);
       } else {
         std::string const next = next_token(begin, end);
         if (next == "=") {
           variables[token] = evaluate_expression(begin, end);
         }
+      }
+    }
+  }
+
+  void run(char const *begin, char const *const end) {
+    while (begin != end) {
+      char const *const before = begin;
+      run_line(begin, end);
+      if (before == begin) {
+        ++begin;
       }
     }
   }
