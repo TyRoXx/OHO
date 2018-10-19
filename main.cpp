@@ -84,6 +84,9 @@ struct interpreter {
     } else if (potential_operator == "+") {
       std::string right = evaluate_expression(begin, end);
       return add(left, right);
+    } else if (potential_operator == "&") {
+      std::string right = evaluate_expression(begin, end);
+      return (left + right);
     } else {
       begin = before_operator;
       return left;
