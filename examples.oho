@@ -18,4 +18,4 @@ print 1 + 2
 print "a" & "b"
 
 ~i = "0"
-WHILE ~i < 3: print ~i   ~i = ~i + 1
+WHILE ~i < 10: print ~i   ~i = ~i + 2

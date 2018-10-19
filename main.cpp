@@ -67,6 +67,13 @@ struct interpreter {
     return std::to_string(std::stoi(left) + std::stoi(right));
   }
 
+  std::string less(std::string const &left, std::string const &right) {
+    if (left.size() < right.size()) {
+      return "true";
+    }
+    return (left < right) ? "true" : "false";
+  }
+
   std::string evaluate_expression(char const *&begin, char const *const end) {
     std::string left = evaluate_atom(begin, end);
     if (left == "!") {
@@ -89,7 +96,7 @@ struct interpreter {
       return (left + right);
     } else if (potential_operator == "<") {
       std::string right = evaluate_expression(begin, end);
-      return (left < right) ? "true" : "false";
+      return less(left, right);
     } else {
       begin = before_operator;
       return left;
