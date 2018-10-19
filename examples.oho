@@ -1,2 +1,2 @@
-print "Hello, world!"
-print "Hallo"
+if true: print "Hello, world!" print "another"
+if false: print "Hallo"

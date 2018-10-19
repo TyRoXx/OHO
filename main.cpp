@@ -53,6 +53,12 @@ void run(char const *begin, char const *const end) {
     if (token == "print") {
       std::string message = evaluate_expression(begin, end);
       std::cout << message << std::endl;
+    } else if (token == "if") {
+      std::string condition = evaluate_expression(begin, end);
+      std::string colon = next_token(begin, end);
+      if (condition != "true") {
+        begin = std::find(begin, end, '\n');
+      }
     }
   }
 }
